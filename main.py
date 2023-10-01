@@ -217,7 +217,7 @@ if(password == 'mission jarvis'):
                 import openai  # Import the OpenAI library
 
                 # OpenAI API Key Setup
-                openai.api_key = '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'  # Replace with your actual API key
+                openai.api_key = 'Your api pls'  # Replace with your actual API key
 
                 # Initialize Text-to-Speech Engine
                 engine = pyttsx3.init('sapi5')
