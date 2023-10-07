@@ -8,10 +8,25 @@ import pyautogui
 import pywhatkit
 import subprocess
 import pyjokes
+import serial
+import time
+
 
 engine = pyttsx3.init()
 voice_id = 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\TTS_MS_EN-US_ZIRA_11.0'
 
+
+ser = serial.Serial('COM6', 9600)
+
+def turn_on_relay():
+    ser.write(b'a')
+    print("Turning ON the relay")
+    speak('Turning on the light')
+
+def turn_off_relay():
+    ser.write(b'b')
+    print("Turning OFF the relay")
+    speak('Turning off the light')
 def speak(audio):
     engine.say(audio)
     engine.runAndWait()
@@ -86,11 +101,8 @@ def takecommand():
         return "Try Again"
 
     return query
-speak("Please give your password")
-password = takecommand().lower()
 
-if(password == 'mission jarvis'):
-    if __name__ == "__main__":
+if __name__ == "__main__":
         wishme()
         while True:
             query = takecommand().lower()
@@ -207,8 +219,18 @@ if(password == 'mission jarvis'):
             elif "offline" in query:
                 speak("Bye Bye Sir")
                 print('---------------------------------------------------------------------------------------------')
-
                 quit()
+
+            elif 'quit' in query:
+                speak('Bye Bye Sir')
+                print('---------------------------------------------------------------------------------------------')
+                quit()
+
+            elif 'light on' in query:
+                turn_on_relay()
+
+            elif 'light off' in query:
+                turn_off_relay()
 
             elif 'knowledge mode' in query:
                 import pyttsx3
@@ -217,7 +239,7 @@ if(password == 'mission jarvis'):
                 import openai  # Import the OpenAI library
 
                 # OpenAI API Key Setup
-                openai.api_key = 'Your api pls'  # Replace with your actual API key
+                openai.api_key = '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'  # Replace with your actual API key
 
                 # Initialize Text-to-Speech Engine
                 engine = pyttsx3.init('sapi5')
@@ -288,7 +310,4 @@ if(password == 'mission jarvis'):
                         print('---------------------------------------------------------------------------------------------')
                         speak(response)
                         speak("And the current time is ")
-                        speak(current_time)
-                        
-else:
-    quit()
+                        speak(current_time) 
