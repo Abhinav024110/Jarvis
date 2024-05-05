@@ -1,4 +1,4 @@
-import pyttsx3 
+import pyttsx3
 import datetime
 import speech_recognition as sr
 import wikipedia
@@ -7,17 +7,20 @@ import pyautogui
 import pywhatkit
 import subprocess
 import pyjokes
-import time
 
 
 engine = pyttsx3.init()
 voice_id = 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\TTS_MS_EN-US_ZIRA_11.0'
 
 engine.setProperty('voice', voice_id)
+
+
 def speak(audio):
     engine.say(audio)
     engine.runAndWait()
-def time():
+
+
+def current_time():
     Time = datetime.datetime.now().strftime("%I:%M:%S")
     speak("the current time is")
     speak(Time)
@@ -25,7 +28,7 @@ def time():
     print('---------------------------------------------------------------------------------------------')
 
 
-def date():
+def current_date():
     day = int(datetime.datetime.now().day)
     month = int(datetime.datetime.now().month)
     year = int(datetime.datetime.now().year)
@@ -40,21 +43,20 @@ def date():
 def wishme():
     print("Welcome back mam!!")
     speak("Welcome back mam!!")
-    
+
     hour = datetime.datetime.now().hour
-    if hour >= 4 and hour < 12:
+    if 4 <= hour < 12:
         speak("Good Morning mam!!")
         print("Good Morning mam!!")
-    elif hour >= 12 and hour < 16:
+    elif 12 <= hour < 16:
         speak("Good Afternoon mam!!")
         print("Good Afternoon mam!!")
-    elif hour >= 16 and hour < 24:
+    elif 16 <= hour < 24:
         speak("Good Evening mam!!")
         print("Good Evening mam!!")
     else:
         speak("Its high time mam, you should sleep now")
         print("Its high time mam, you should sleep now")
-
 
     speak("Jarvis at your service mam, please tell me how may I help you.")
     print("Jarvis at your service mam, please tell me how may I help you.")
@@ -64,7 +66,6 @@ def wishme():
 def screenshot():
     img = pyautogui.screenshot()
     img.save("C:\\Users\\abhin\\Downloads\\ss.png")
-
 
 
 def takecommand():
@@ -79,7 +80,6 @@ def takecommand():
         query = r.recognize_google(audio, language="en-in")
         print(query)
         print('---------------------------------------------------------------------------------------------')
-        
 
     except Exception as e:
         print(e)
@@ -88,113 +88,101 @@ def takecommand():
 
     return query
 
+
 if __name__ == "__main__":
-        wishme()
-        while True:
-            query = takecommand().lower()
-            if "time" in query:
-                time()
+    wishme()
+    while True:
+        query = takecommand().lower()
+        if "time" in query:
+            current_time()
 
-            elif "date" in query:
-                date()
+        elif "date" in query:
+            current_date()
 
-            elif "who are you" in query:
-                speak("I'm Alexa created by Payomanti Ghosh WITH TEAM and I'm a desktop voice assistant.")
-                print("I'm Alexa created by Payomanti Ghosh WITH TEAM and I'm a desktop voice assistant.")
+        elif "who are you" in query:
+            speak("I'm Alexa created by Payomanti Ghosh WITH TEAM and I'm a desktop voice assistant.")
+            print("I'm Alexa created by Payomanti Ghosh WITH TEAM and I'm a desktop voice assistant.")
+            print('---------------------------------------------------------------------------------------------')
+
+        elif "how are you" in query:
+            speak("I'm fine mam, What about you?")
+            print("I'm fine mam, What about you?")
+            print('---------------------------------------------------------------------------------------------')
+
+        elif 'screenshot' in query:
+            screenshot()
+            speak("Screenshot Successfull")
+
+        elif "fine" in query or "good" in query:
+            speak("Glad to hear that mam!!")
+            print("Glad to hear that mam!!")
+            print('---------------------------------------------------------------------------------------------')
+
+        elif "wikipedia" in query:
+            try:
+                speak("Ok wait mam, I'm searching...")
+                query = query.replace("wikipedia", "")
+                result = wikipedia.summary(query, sentences=2)
+                print(result)
+                speak(result)
                 print('---------------------------------------------------------------------------------------------')
 
+            except Exception as e:
+                print(e)
+                speak("Can't find this page mam, please ask something else")
 
-            elif "how are you" in query:
-                speak("I'm fine mam, What about you?")
-                print("I'm fine mam, What about you?")
-                print('---------------------------------------------------------------------------------------------')
+        elif 'open notepad' in query:
+            speak("Opening notepad")
+            subprocess.Popen('C:\\Windows\\notepad.exe')
 
-            elif 'screenshot' in query:
-                screenshot()
-                speak("Screenshot Successfull")
+        elif 'open calculator' in query:
+            subprocess.Popen('C:\\Windows\\System32\\calc.exe')
 
-            elif "fine" in query:
-                speak("Glad to hear that mam!!")
-                print("Glad to hear that mam!!")
-                print('---------------------------------------------------------------------------------------------')
+        elif 'open wordpad' in query:
+            subprocess.Popen('C:\\Program Files (x86)\\Windows NT\\Accessories\\wordpad.exe')
 
+        elif "youtube" in query:
+            wb.open("https://www.youtube.com")
 
-            elif "good" in query:
-                speak("Glad to hear that mam!!")
-                print("Glad to hear that mam!!")
-                print('---------------------------------------------------------------------------------------------')
+        elif "google" in query:
+            wb.open("https://www.google.com")
 
+        elif 'open whatsapp' in query:
+            wb.open('https://web.whatsapp.com/')
 
-            elif "wikipedia" in query:
-                try:
-                    speak("Ok wait mam, I'm searching...")
-                    query = query.replace("wikipedia","")
-                    result = wikipedia.summary(query, sentences=2)
-                    print(result)
-                    speak(result)
-                    print('---------------------------------------------------------------------------------------------')
+        elif "open chrome" in query:
+            chromePath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+            subprocess.Popen(chromePath)
 
-                except:
-                    speak("Can't find this page mam, please ask something else")
-            
-            elif 'open notepad' in query:
-                speak("Openinig notepad")
-                subprocess.Popen('C:\\Windows\\notepad.exe')
-            
-            elif 'open calculator' in query:
-                subprocess.Popen('C:\\Windows\\System32\\calc.exe')
+        elif 'joke' in query:
+            My_joke = pyjokes.get_joke(language="en", category="neutral")
+            speak(My_joke)
+            print(My_joke)
 
-            elif 'open wordpad' in query:
-                subprocess.Popen('C:\\Program Files (x86)\\Windows NT\\Accessories\\wordpad.exe')
-            elif "youtube" in query:
-                wb.open("youtube.com") 
+        elif 'play' in query:
+            yt = query[5:]
+            speak("Playing ")
+            speak(yt)
+            pywhatkit.playonyt(yt)
 
-            elif "google" in query:
-                wb.open("google.com")
+        elif "remember that" in query:
+            speak("What should I remember")
+            data = takecommand()
+            speak("You said me to remember that" + data)
+            print("You said me to remember that " + str(data))
+            print('---------------------------------------------------------------------------------------------')
 
-            elif 'open whatsapp' in query:
-                wb.open('https://web.whatsapp.com/')
+            remember = open("data.txt", "a")
+            remember.write(data + '\n')
+            remember.close()
 
-            elif "open chrome" in query:
-                chromePath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
-                subprocess.Popen(chromePath)
-                
-            elif 'joke' in query:
-                My_joke = pyjokes.get_joke(language="en", category="neutral")
-                speak(My_joke)
-                print(My_joke)
-            
-            elif 'play' in query:
-                yt = query.removeprefix('play')
-                speak("Playing ")
-                speak(query)
-                pywhatkit.playonyt(yt)
+        elif "do you remember" in query:
+            remember = open("data.txt", "r")
+            speak("You told me to remember that" + remember.read())
+            print("You told me to remember that " + str(remember))
+            print('---------------------------------------------------------------------------------------------')
 
-
-            elif "remember that" in query:
-                speak("What should I remember")
-                data = takecommand()
-                speak("You said me to remember that" + data)
-                print("You said me to remember that " + str(data))
-                print('---------------------------------------------------------------------------------------------')
-
-                remember = open("data.txt", "w")
-                remember.write(data)
-                remember.close()
-
-            elif "do you remember" in query:
-                remember = open("data.txt", "r")
-                speak("You told me to remember that" + remember.read())
-                print("You told me to remember that " + str(remember))
-                print('---------------------------------------------------------------------------------------------')
-
-
-            elif "offline" in query:
-                speak("Bye Bye mam")
-                print('---------------------------------------------------------------------------------------------')
-                quit()
-
-            elif 'quit' in query:
-                speak('Bye Bye mam')
-                print('---------------------------------------------------------------------------------------------')
-                quit()
+        elif "offline" in query or 'quit' in query:
+            speak("Bye Bye mam")
+            print('---------------------------------------------------------------------------------------------')
+            quit()
